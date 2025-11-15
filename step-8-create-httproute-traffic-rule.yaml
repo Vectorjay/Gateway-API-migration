@@ -1,0 +1,29 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: web-route
+spec:
+  parentRefs:
+  - name: web-gateway
+  hostnames:
+  - "gateway.web.k8s.local"
+  rules:
+  - matches:
+    - path:
+        type: PathPrefix
+        value: /
+    backendRefs:
+    - name: web-service
+      port: 80
+
+
+#echo "=== INGRESS CONFIGURATION ==="
+#kubectl get ingress web-ingress -n web-demo -o yaml
+
+#echo "=== GATEWAY API CONFIGURATION ==="
+#kubectl get gateway web-gateway -n web-demo -o yaml
+#kubectl get httproute web-route -n web-demo -o yaml
+
+############ Veryfy application works ##############
+#kubectl port-forward -n web-demo service/web-service 8080:80 &
+#curl -H "Host: gateway.web.k8s.local" http://localhost:8080

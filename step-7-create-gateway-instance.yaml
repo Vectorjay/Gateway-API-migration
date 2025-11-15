@@ -1,0 +1,19 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: web-gateway
+spec:
+  gatewayClassName: demo-class
+  listeners:
+  - name: https
+    port: 443
+    protocol: HTTPS
+    hostname: "gateway.web.k8s.local"
+    tls:
+      mode: Terminate
+      certificateRefs:
+      - kind: Secret
+        name: web-tls-secret
+    allowedRoutes:
+      namespaces:
+        from: Same

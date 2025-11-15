@@ -1,0 +1,26 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: web-ingress
+spec:
+  ingressClassName: nginx
+  tls:
+  - hosts:
+    - gateway.web.k8s.local
+    secretName: web-tls-secret
+  rules:
+  - host: gateway.web.k8s.local
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: web-service
+            port:
+              number: 80
+
+##### Verify ingress works ######
+
+kubectl get ingress -n web-demo
+kubectl describe ingress web-ingress -n web-demo

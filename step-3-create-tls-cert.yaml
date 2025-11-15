@@ -1,0 +1,8 @@
+openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
+  -keyout tls.key -out tls.crt \
+  -subj "/CN=gateway.web.k8s.local"
+
+kubectl create secret tls web-tls-secret \
+  --namespace=web-demo \
+  --cert=tls.crt \
+  --key=tls.key
